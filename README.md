@@ -46,7 +46,7 @@ Neural Theft: AI-Powered Caesar Cipher Decryption System
     cd neural-theft
         
 
-### Install Dependencies
+### Install Dependencies(this is complete resources you can skip this step directly run the project and install pakages as required manully --> for windows user , terminal will show you required projects needed so you can install using (pip install ame) cause many pakages are not available in windows so might get an error while installing req.txt
 
 *   **Python Packages**:
     
