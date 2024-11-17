@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title class="title">Caesar Cipher with English Frequency Score</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    
+    #showIntroModal {
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 8px;
+        background-color: #17a2b8; /* Info color */
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #showIntroModal:hover {
+        background-color: #138496; /* Darker info color for hover */
+    }
+
+    /* Modal customization */
+    .modal-content {
+        background-color: #000; /* Match dark theme */
+        color: #fff; /* White text for contrast */
+        border: 1px solid #444; /* Border for separation */
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #555; /* Subtle border */
+        background-color: #111; /* Darker background */
+    }
+
+    .modal-title {
+        color: #ff9800; /* Highlight for title */
+        font-weight: bold;
+    }
+
+    .modal-body h5 {
+        margin-top: 15px;
+        color: #ff9800; /* Orange highlight */
+    }
+
+    .modal-body p,
+    .modal-body li {
+        color: #ddd; /* Softer white for body text */
+    }
+
+    .modal-footer {
+        border-top: 1px solid #555; /* Subtle border */
+        background-color: #111; /* Darker background */
+    }
+
+    /* Button inside modal */
+    .modal-footer .btn-primary {
+        background-color: #007bff; /* Primary color */
+        border-color: #0056b3;
+    }
+
+    .modal-footer .btn-primary:hover {
+        background-color: #0056b3; /* Darker primary color on hover */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Bootstrap's primary color */
+        border-color: #0056b3;
+    }
+    .logo-container {
+        margin-bottom: 20px;
+    }
+    .logo {
+        max-width: 200px; /* Adjust size as needed */
+        height: auto;
+    }
+
+        body {
+            padding-top: 50px;
+            margin: 0;
+            overflow: auto; /* scrollbars */
+            background-color: #000;
+        }
+        h2 {
+            color:white ;
+        }
+        .container {
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .left-column {
+            max-width: 60%;
+        }
+
+        .right-column {
+            max-width: 100%;
+            padding-left: 30px;
+        }
+
+        .result,.result1 ,.insights {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .insights {
+            background-color: #f1f1f1;
+
+        }
+
+        .insight-item {
+            margin-bottom: 10px;
+        }
+
+        .text-info {
+            font-weight: bold;
+        }
+
+        #c {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Canvas stays in the background */
+        }
+
+    </style>
+</head>
+<body>
+    
+    <!-- Canvas for Particle Effect Background -->
+    <canvas id="c"></canvas>
+    <div class="modal-header">
+        <img src="/static/images/logo.png" alt="Neural Theft Logo" class="logo" style="max-width: 100px;">
+        <h5 class="modal-title" style="color: white"><b>Welcome to Neural Theft</b></h5>
+    </div>
+    <button id="showIntroModal" class="btn btn-info" style="margin: 10px;">Show Introduction</button>
+
+    <!-- Introduction Modal -->
+    <div class="modal fade" id="introModal" tabindex="-1" aria-labelledby="introModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="introModalLabel">Welcome to Neural Theft!</h5>
+                </div>
+                <div class="modal-body">
+                    <h5>Introduction</h5>
+                    <p>
+                        Neural Theft is a tool that combines Caesar Cipher encryption/decryption with English frequency scoring to help uncover the most meaningful messages. It also provides AI-generated summaries for decrypted text.
+                    </p>
+                    <h5>How to Use</h5>
+                    <ol>
+                        <li>Enter your message in the text area provided.</li>
+                        <li>Specify a shift key (optional; defaults to 3).</li>
+                        <li>Choose to either Encrypt or Decrypt the message:</li>
+                        <ul>
+                            <li><b>Encrypt:</b> Encodes your message using the Caesar Cipher.</li>
+                            <li><b>Decrypt:</b> Attempts to find the original message and highlights the most probable decryption based on frequency analysis.</li>
+                        </ul>
+                        <li>View insights and summaries for decrypted text.</li>
+                    </ol>
+                    <h5>Additional Notes</h5>
+                    <ul>
+                        <li><b>Frequency Analysis:</b> Works best for messages with more than 5 words, as it relies on common English letter patterns.</li>
+                        <li><b>AI Summary:</b> The summary is generated using a free pre-trained AI model and might not always be perfectly accurate.</li>
+                        <li><b>Performance Note:</b> This application may run slower on low-spec devices or with slow internet connections due to the AI model and visual effects.</li>
+                    </ul>
+                    <p>Enjoy exploring the power of cryptography and AI!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="gotItButton" class="btn btn-primary" data-bs-dismiss="modal">Got It!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Automatically show modal on the first visit
+            if (!localStorage.getItem("introModalShown")) {
+                var introModal = new bootstrap.Modal(document.getElementById('introModal'));
+                introModal.show();
+                localStorage.setItem("introModalShown", "true");
+            }
+
+            // Reopen modal on button click
+            document.getElementById('showIntroModal').addEventListener('click', function () {
+                var introModal = new bootstrap.Modal(document.getElementById('introModal'));
+                introModal.show();
+            });
+        });
+    </script>
+
+
+    <div class="container">
+        <div class="left-column">
+          <h2 class="text-center"><b>NEURAL THEFT</b> : Caesar Cipher with English Frequency Score</h2>
+        
+            <form method="POST" action="/">
+                <div class="form-group">
+                    <h2><label for="message">Enter Message:</label></h2>
+                    <textarea class="form-control" id="message" name="message" rows="4" required>{{ request.form['message'] if request.form.get('message') else '' }}</textarea>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="key"><h2>Shift Key (Optional, Default: 3):</h2></label>
+                    <input type="number" class="form-control" id="key" name="key" value="{{ request.form.get('key', 3) }}" min="0" max="25">
+                </div>
+
+                <div class="form-group mt-3 d-flex justify-content-between">
+                    <button type="submit" name="action" value="Encrypt" class="btn btn-success">Encrypt</button>
+                    <button type="submit" name="action" value="Decrypt" class="btn btn-danger">Decrypt</button>
+                </div>
+            </form>
+        
+            {% if result1 %}
+            <div class="result1" style="background-color: #f1f1f1;">
+                <h4 style="color:black"><b><u>Encrypted Message:</u></b></h4>
+                <p><b><h3>{{ result1 }}</h3></b></p>
+            </div>
+            {% endif %}
+            {% if result %}
+            <div class="result" style="background-color: #f1f1f1;">
+                <h4 style="color:black"><b><u>Most Probable Decrypted Message:</u></b></h4>
+                <p><b><h3>{{ result }}</h3></b></p>
+            </div>
+            {% endif %}
+            
+            {% if summary %}
+            
+            <div class="result">
+                <h4>Summary of Decrypted Message:</h4>
+                <p>{{ summary }}</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="right-column">
+            {% if insights %}
+            <div class="insights">
+                <h5>English Frequency Score Insights:</h5>
+                <ul>
+                    {% for insight in insights %}
+                    <li class="insight-item">
+                        <span class="text-info">Text:</span> {{ insight['text'] }}<br>
+                        <span class="text-info">English Score:</span> {{ insight['english_score'] }}<br>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
+
+    <script>
+        const particleVertex = `
+        attribute float scale;
+        uniform float uTime;
+
+        void main() {
+            vec3 p = position;
+            float s = scale;
+
+            p.y += (sin(p.x + uTime) * 0.5) + (cos(p.y + uTime) * 0.1) * 2.0;
+            p.x += (sin(p.y + uTime) * 0.5);
+            s += (sin(p.x + uTime) * 0.5) + (cos(p.y + uTime) * 0.1) * 2.0;
+
+            vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
+            gl_PointSize = s * 15.0 * (1.0 / -mvPosition.z);
+            gl_Position = projectionMatrix * mvPosition;
+        }
+        `;
+
+        const particleFragment = `
+        void main() {
+            gl_FragColor = vec4(1.0, 1.0, 1.0, 0.5);
+        }
+        `;
+
+        class Canvas {
+            constructor() {
+                this.config = {
+                    canvas: document.querySelector('#c'),
+                    winWidth: window.innerWidth,
+                    winHeight: window.innerHeight,
+                    aspectRatio: window.innerWidth / window.innerHeight,
+                    mouse: new THREE.Vector2(-10, -10)
+                };
+
+                this.onResize = this.onResize.bind(this);
+                this.onMouseMove = this.onMouseMove.bind(this);
+                this.animate = this.animate.bind(this);
+
+                this.initCamera();
+                this.initScene();
+                this.initRenderer();
+
+                this.initParticles();
+
+                this.bindEvents();
+                this.animate();
+            }
+
+            bindEvents() {
+                window.addEventListener('resize', this.onResize);
+                window.addEventListener('mousemove', this.onMouseMove, false);
+            }
+
+            initCamera() {
+                this.camera = new THREE.PerspectiveCamera(75, this.config.aspectRatio, 0.01, 1000);
+                this.camera.position.set(0, 6, 5);
+            }
+
+            initControls() {
+                this.controls = new THREE.OrbitControls(this.camera, this.config.canvas);
+            }
+
+            initScene() {
+                this.scene = new THREE.Scene();
+            }
+
+            initRenderer() {
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: this.config.canvas,
+                    antialias: true
+                });
+                this.renderer.setPixelRatio(window.devicePixelRatio);
+                this.renderer.setSize(this.config.winWidth, this.config.winHeight);
+            }
+
+            initParticles() {
+                const gap = 0.3;
+                const amountX = 200;
+                const amountY = 200;
+                const particleNum = amountX * amountY;
+                const particlePositions = new Float32Array(particleNum * 3);
+                const particleScales = new Float32Array(particleNum);
+                let i = 0;
+                let j = 0;
+
+                for (let ix = 0; ix < amountX; ix++) {
+                    for (let iy = 0; iy < amountY; iy++) {
+                        particlePositions[i] = ix * gap - ((amountX * gap) / 2);
+                        particlePositions[i + 1] = 0;
+                        particlePositions[i + 2] = iy * gap - ((amountX * gap) / 2);
+                        particleScales[j] = 1;
+                        i += 3;
+                        j++;
+                    }
+                }
+
+                this.particleGeometry = new THREE.BufferGeometry();
+                this.particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+                this.particleGeometry.setAttribute('scale', new THREE.BufferAttribute(particleScales, 1));
+
+                this.particleMaterial = new THREE.ShaderMaterial({
+                    transparent: true,
+                    vertexShader: particleVertex,
+                    fragmentShader: particleFragment,
+                    uniforms: {
+                        uTime: { type: 'f', value: 0 }
+                    }
+                });
+                this.particles = new THREE.Points(this.particleGeometry, this.particleMaterial);
+                this.scene.add(this.particles);
+            }
+
+            render() {
+                this.camera.lookAt(this.scene.position);
+                this.renderer.render(this.scene, this.camera);
+            }
+
+            animate() {
+                this.particleMaterial.uniforms.uTime.value += 0.01;
+                this.render();
+                requestAnimationFrame(this.animate);
+            }
+
+            onResize() {
+                this.config.winWidth = window.innerWidth;
+                this.config.winHeight = window.innerHeight;
+                this.config.aspectRatio = this.config.winWidth / this.config.winHeight;
+                this.camera.aspect = this.config.aspectRatio;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(this.config.winWidth, this.config.winHeight);
+            }
+
+            onMouseMove(event) {
+                this.config.mouse.x = (event.clientX / this.config.winWidth) * 2 - 1;
+                this.config.mouse.y = -(event.clientY / this.config.winHeight) * 2 + 1;
+            }
+        }
+
+        new Canvas();
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!localStorage.getItem("introModalShown")) {
+                var introModal = new bootstrap.Modal(document.getElementById('introModal'));
+                introModal.show();
+                localStorage.setItem("introModalShown", "true");
+            }
+        });
+    
+        
+    </script>
+    
+    
+    
+    
+</body>
+</html>
