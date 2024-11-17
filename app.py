@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request
 from transformers import pipeline
 
-# Initialize Flask app
+# Initialize the Flask app
 app = Flask(__name__)
 
-# Load pre-trained summarization model
+# Load pre-trained summarization model for generating insights
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
-# Caesar Cipher Encryption
+# Function to encrypt a message using Caesar Cipher
 def encrypt_caesar_cipher(message, key):
     """Encrypt the given message using Caesar Cipher with a provided key."""
     encrypted = ""
@@ -20,7 +20,7 @@ def encrypt_caesar_cipher(message, key):
             encrypted += char
     return encrypted
 
-# Caesar Cipher Decryption
+# Function to decrypt a message using Caesar Cipher
 def decrypt_caesar_cipher(message, key):
     """Decrypt the given message using Caesar Cipher with a provided key."""
     decrypted = ""
@@ -33,84 +33,47 @@ def decrypt_caesar_cipher(message, key):
             decrypted += char
     return decrypted
 
-# Generate summary using a pre-trained model
+# Function to generate a summary for a given text
 def generate_summary(text):
-    """Generate a concise summary of the decrypted message."""
+    """Generate a concise summary for the decrypted message."""
     try:
         summary_result = summarizer(text, max_length=500, min_length=50, do_sample=False)
-        summary = summary_result[0]["summary_text"]
-        # Truncate if necessary
-        if len(summary.split()) > 500:
-            summary = " ".join(summary.split()[:500]) + "..."
-        return summary
+        return summary_result[0]["summary_text"]
     except Exception as e:
         return f"Error generating summary: {str(e)}"
 
-# Frequency-based scoring for English text
-def english_frequency_score(text):
-    """Calculate a frequency-based score for English text."""
-    english_freq = "etaoinshrdlcumwfgypbvkjxqz"
-    score = sum([english_freq.index(c.lower()) if c.lower() in english_freq else 0 for c in text])
-    return score
-
-# Flask Routes
+# Flask route for the main page
 @app.route("/", methods=["GET", "POST"])
 def index():
-    """Main route for the web application."""
+    """Render the homepage and handle encryption/decryption."""
     result1 = ""
     result = ""
-    insights = []
     summary = ""
     message = ""
 
     if request.method == "POST":
-        # Get data from the form
         message = request.form.get("message", "")
         key = request.form.get("key", "").strip()
         action = request.form.get("action", "")
 
-        # Validate key input
+        # Handle key validation
         try:
             key = int(key) if key else None
         except ValueError:
-            return render_template(
-                "index.html",
-                result1=result1,
-                result=result,
-                insights=insights,
-                summary="Invalid key. Please provide a numeric value.",
-                message=message,
-            )
+            return render_template("index.html", summary="Invalid key. Please provide a numeric value.")
 
-        # Perform the chosen action
+        # Encrypt or decrypt based on user action
         if action == "Encrypt":
-            key = key or 3  # Default key is 3
+            key = key or 3
             result1 = encrypt_caesar_cipher(message, key)
         elif action == "Decrypt":
-            if key is not None:
-                result = decrypt_caesar_cipher(message, key)
-            else:
-                # Decrypt with all possible keys and find the most probable message
-                possible_decryptions = [
-                    {"key": i, "text": decrypt_caesar_cipher(message, i)}
-                    for i in range(26)
-                ]
-                for decryption in possible_decryptions:
-                    decryption["english_score"] = english_frequency_score(decryption["text"])
-
-                # Sort predictions by score (higher is better)
-                insights = sorted(possible_decryptions, key=lambda x: x["english_score"], reverse=False)
-                best_result = insights[0]
-                result = best_result["text"]
-                
-                # Generate summary for the best result
+            key = key or 3
+            result = decrypt_caesar_cipher(message, key)
+            if result:
                 summary = generate_summary(result)
 
-    return render_template(
-        "index.html", result1=result1, result=result, insights=insights, summary=summary, message=message
-    )
+    return render_template("index.html", result1=result1, result=result, summary=summary, message=message)
 
-
-# Run the Flask app
+# Run the app
 if __name__ == "__main__":
     app.run(debug=True)
