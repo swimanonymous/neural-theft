@@ -50,7 +50,7 @@ Neural Theft: AI-Powered Caesar Cipher Decryption System
 
 *   **Python Packages**:
     
-        pip install -r requirements.txt
+        pip install -r requirements.txt --no-deps --ignore-requires-python
     
 
 
