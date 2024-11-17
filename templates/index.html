@@ -7,7 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
     
-    #showIntroModal {
+      /* Style for the "Show Introduction" button */
+      #showIntroModal {
         font-size: 1rem;
         font-weight: bold;
         padding: 10px 20px;
@@ -63,11 +64,6 @@
 
     .modal-footer .btn-primary:hover {
         background-color: #0056b3; /* Darker primary color on hover */
-    }
-
-    .btn-primary {
-        background-color: #007bff; /* Bootstrap's primary color */
-        border-color: #0056b3;
     }
     .logo-container {
         margin-bottom: 20px;
@@ -143,65 +139,70 @@
         <img src="/static/images/logo.png" alt="Neural Theft Logo" class="logo" style="max-width: 100px;">
         <h5 class="modal-title" style="color: white"><b>Welcome to Neural Theft</b></h5>
     </div>
-    <button id="showIntroModal" class="btn btn-info" style="margin: 10px;">Show Introduction</button>
+   <!-- Reopen Modal Button -->
+   <button id="showIntroModal" class="btn btn-info" style="margin: 10px;">Show Introduction</button>
 
-    <!-- Introduction Modal -->
-    <div class="modal fade" id="introModal" tabindex="-1" aria-labelledby="introModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="introModalLabel">Welcome to Neural Theft!</h5>
-                </div>
-                <div class="modal-body">
-                    <h5>Introduction</h5>
-                    <p>
-                        Neural Theft is a tool that combines Caesar Cipher encryption/decryption with English frequency scoring to help uncover the most meaningful messages. It also provides AI-generated summaries for decrypted text.
-                    </p>
-                    <h5>How to Use</h5>
-                    <ol>
-                        <li>Enter your message in the text area provided.</li>
-                        <li>Specify a shift key (optional; defaults to 3).</li>
-                        <li>Choose to either Encrypt or Decrypt the message:</li>
-                        <ul>
-                            <li><b>Encrypt:</b> Encodes your message using the Caesar Cipher.</li>
-                            <li><b>Decrypt:</b> Attempts to find the original message and highlights the most probable decryption based on frequency analysis.</li>
-                        </ul>
-                        <li>View insights and summaries for decrypted text.</li>
-                    </ol>
-                    <h5>Additional Notes</h5>
-                    <ul>
-                        <li><b>Frequency Analysis:</b> Works best for messages with more than 5 words, as it relies on common English letter patterns.</li>
-                        <li><b>AI Summary:</b> The summary is generated using a free pre-trained AI model and might not always be perfectly accurate.</li>
-                        <li><b>Performance Note:</b> This application may run slower on low-spec devices or with slow internet connections due to the AI model and visual effects.</li>
-                    </ul>
-                    <p>Enjoy exploring the power of cryptography and AI!</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="gotItButton" class="btn btn-primary" data-bs-dismiss="modal">Got It!</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+   <!-- Introduction Modal -->
+   <div class="modal fade" id="introModal" tabindex="-1" aria-labelledby="introModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" id="introModalLabel">Welcome to Neural Theft!</h5>
+               </div>
+               <div class="modal-body">
+                   <h5>Introduction</h5>
+                   <p>
+                       Neural Theft is a tool that combines Caesar Cipher encryption/decryption with English frequency scoring to help uncover the most meaningful messages. It also provides AI-generated summaries for decrypted text.
+                   </p>
+                   <h5>New Feature</h5>
+                   <p>
+                       You can now encrypt any paragraph with a custom key and decrypt it without providing a key! Our frequency analysis engine identifies the most probable original text, and our AI generates a meaningful summary for it.
+                   </p>
+                   <h5>How to Use</h5>
+                   <ol>
+                       <li>Enter your message in the text area provided.</li>
+                       <li>Specify a shift key (optional for encryption).</li>
+                       <li>Choose one of the options:
+                           <ul>
+                               <li><b>Encrypt:</b> Encodes your message using the Caesar Cipher.</li>
+                               <li><b>Decrypt with Key:</b> Decodes your message using the provided key.</li>
+                               <li><b>Decrypt without Key:</b> Attempts to find the original message using frequency analysis.</li>
+                           </ul>
+                       </li>
+                       <li>View insights and summaries for decrypted text.</li>
+                   </ol>
+                   <h5>Additional Notes</h5>
+                   <ul>
+                       <li><b>Frequency Analysis:</b> Works best for messages with more than 5 words, as it relies on common English letter patterns.</li>
+                       <li><b>AI Summary:</b> The summary is generated using a free pre-trained AI model and might not always be perfectly accurate.</li>
+                   </ul>
+                   <p>Enjoy exploring the power of cryptography and AI!</p>
+               </div>
+               <div class="modal-footer">
+                   <button type="button" id="gotItButton" class="btn btn-primary" data-bs-dismiss="modal">Got It!</button>
+               </div>
+           </div>
+       </div>
+   </div>
 
-    <!-- JavaScript -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Automatically show modal on the first visit
-            if (!localStorage.getItem("introModalShown")) {
-                var introModal = new bootstrap.Modal(document.getElementById('introModal'));
-                introModal.show();
-                localStorage.setItem("introModalShown", "true");
-            }
+   <!-- JavaScript -->
+   <script>
+       document.addEventListener("DOMContentLoaded", function () {
+           // Automatically show modal on the first visit
+           if (!localStorage.getItem("introModalShown")) {
+               var introModal = new bootstrap.Modal(document.getElementById('introModal'));
+               introModal.show();
+               localStorage.setItem("introModalShown", "true");
+           }
 
-            // Reopen modal on button click
-            document.getElementById('showIntroModal').addEventListener('click', function () {
-                var introModal = new bootstrap.Modal(document.getElementById('introModal'));
-                introModal.show();
-            });
-        });
-    </script>
-
+           // Reopen modal on button click
+           document.getElementById('showIntroModal').addEventListener('click', function () {
+               var introModal = new bootstrap.Modal(document.getElementById('introModal'));
+               introModal.show();
+           });
+       });
+   </script>
+</body>
 
     <div class="container">
         <div class="left-column">
@@ -268,32 +269,32 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
-
+     
     <script>
         const particleVertex = `
-        attribute float scale;
-        uniform float uTime;
-
-        void main() {
-            vec3 p = position;
-            float s = scale;
-
-            p.y += (sin(p.x + uTime) * 0.5) + (cos(p.y + uTime) * 0.1) * 2.0;
-            p.x += (sin(p.y + uTime) * 0.5);
-            s += (sin(p.x + uTime) * 0.5) + (cos(p.y + uTime) * 0.1) * 2.0;
-
-            vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
-            gl_PointSize = s * 15.0 * (1.0 / -mvPosition.z);
-            gl_Position = projectionMatrix * mvPosition;
-        }
+            attribute float scale;
+            uniform float uTime;
+    
+            void main() {
+                vec3 p = position;
+                float s = scale;
+    
+                p.y += (sin(p.x + uTime) * 0.5) + (cos(p.y + uTime) * 0.1) * 2.0;
+                p.x += (sin(p.y + uTime) * 0.5);
+                s += (sin(p.x + uTime) * 0.5) + (cos(p.y + uTime) * 0.1) * 2.0;
+    
+                vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
+                gl_PointSize = s * 15.0 * (1.0 / -mvPosition.z);
+                gl_Position = projectionMatrix * mvPosition;
+            }
         `;
-
+    
         const particleFragment = `
-        void main() {
-            gl_FragColor = vec4(1.0, 1.0, 1.0, 0.5);
-        }
+            void main() {
+                gl_FragColor = vec4(1.0, 1.0, 1.0, 0.5);
+            }
         `;
-
+    
         class Canvas {
             constructor() {
                 this.config = {
@@ -303,39 +304,39 @@
                     aspectRatio: window.innerWidth / window.innerHeight,
                     mouse: new THREE.Vector2(-10, -10)
                 };
-
+    
                 this.onResize = this.onResize.bind(this);
                 this.onMouseMove = this.onMouseMove.bind(this);
                 this.animate = this.animate.bind(this);
-
+    
                 this.initCamera();
                 this.initScene();
                 this.initRenderer();
-
+    
                 this.initParticles();
-
+    
                 this.bindEvents();
                 this.animate();
             }
-
+    
             bindEvents() {
                 window.addEventListener('resize', this.onResize);
                 window.addEventListener('mousemove', this.onMouseMove, false);
             }
-
+    
             initCamera() {
                 this.camera = new THREE.PerspectiveCamera(75, this.config.aspectRatio, 0.01, 1000);
                 this.camera.position.set(0, 6, 5);
             }
-
+    
             initControls() {
                 this.controls = new THREE.OrbitControls(this.camera, this.config.canvas);
             }
-
+    
             initScene() {
                 this.scene = new THREE.Scene();
             }
-
+    
             initRenderer() {
                 this.renderer = new THREE.WebGLRenderer({
                     canvas: this.config.canvas,
@@ -344,7 +345,7 @@
                 this.renderer.setPixelRatio(window.devicePixelRatio);
                 this.renderer.setSize(this.config.winWidth, this.config.winHeight);
             }
-
+    
             initParticles() {
                 const gap = 0.3;
                 const amountX = 200;
@@ -354,7 +355,7 @@
                 const particleScales = new Float32Array(particleNum);
                 let i = 0;
                 let j = 0;
-
+    
                 for (let ix = 0; ix < amountX; ix++) {
                     for (let iy = 0; iy < amountY; iy++) {
                         particlePositions[i] = ix * gap - ((amountX * gap) / 2);
@@ -365,11 +366,11 @@
                         j++;
                     }
                 }
-
+    
                 this.particleGeometry = new THREE.BufferGeometry();
                 this.particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
                 this.particleGeometry.setAttribute('scale', new THREE.BufferAttribute(particleScales, 1));
-
+    
                 this.particleMaterial = new THREE.ShaderMaterial({
                     transparent: true,
                     vertexShader: particleVertex,
@@ -381,18 +382,18 @@
                 this.particles = new THREE.Points(this.particleGeometry, this.particleMaterial);
                 this.scene.add(this.particles);
             }
-
+    
             render() {
                 this.camera.lookAt(this.scene.position);
                 this.renderer.render(this.scene, this.camera);
             }
-
+    
             animate() {
                 this.particleMaterial.uniforms.uTime.value += 0.01;
                 this.render();
                 requestAnimationFrame(this.animate);
             }
-
+    
             onResize() {
                 this.config.winWidth = window.innerWidth;
                 this.config.winHeight = window.innerHeight;
@@ -401,15 +402,16 @@
                 this.camera.updateProjectionMatrix();
                 this.renderer.setSize(this.config.winWidth, this.config.winHeight);
             }
-
+    
             onMouseMove(event) {
                 this.config.mouse.x = (event.clientX / this.config.winWidth) * 2 - 1;
                 this.config.mouse.y = -(event.clientY / this.config.winHeight) * 2 + 1;
             }
         }
-
+    
         new Canvas();
     </script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             if (!localStorage.getItem("introModalShown")) {
