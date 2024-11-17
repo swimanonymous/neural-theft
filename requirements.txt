@@ -1,5 +1,5 @@
 numpy
 Flask
-transformers -U
+transformers
 torch
 sympy
