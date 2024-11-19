@@ -93,7 +93,15 @@ Above is an illustration of how the decryption process works, from the encrypted
 👥 Contributors
 ---------------
 
-*   **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
+*  **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
+  ![sahil](static/images/sahil.png)
+*  **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
+  ![harsh](static/images/harsh.png)
+*  **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
+  ![pavan](static/images/pavan.png)
+*  **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
+  ![amitabh](static/images/amitabh.png)
+    
 *   Open for contributions! Feel free to fork and create pull requests.
 
 📜 License
