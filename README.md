@@ -93,14 +93,7 @@ Above is an illustration of how the decryption process works, from the encrypted
 👥 Contributors
 ---------------
 
-*  **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
-  ![sahil](static/images/sahil.png)
-*  **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
-  ![harsh](static/images/harsh.png)
-*  **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
-  ![pavan](static/images/pavan.png)
-*  **sahil kadam**: [GitHub Profile](https://github.com/swimanonymous)
-  ![amitabh](static/images/amitabh.png)
+<div style="display: flex; flex-wrap: wrap; gap: 20px;"> <div style="text-align: center;"> <img src="static/images/sahil.jpg" alt="Sahil Kadam" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;"> <p><b>Sahil Kadam</b></p> <a href="https://github.com/swimanonymous">GitHub Profile</a> </div> <div style="text-align: center;"> <img src="static/images/harsh.jpg" alt="Harshvardhan Patel" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;"> <p><b>Harshvardhan Patel</b></p> <a href="https://github.com/harshvardhanpatel00011">GitHub Profile</a> </div> <div style="text-align: center;"> <img src="static/images/pavan.jpg" alt="Pavan Kumar" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;"> <p><b>Pavan Kumar</b></p> <a href="https://github.com/gpavankumararaligidad">GitHub Profile</a> </div> <div style="text-align: center;"> <img src="static/images/amitabh.jpg" alt="Amitabh" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;"> <p><b>Amitabh</b></p> <p>GitHub Profile: N/A</p> </div> </div>
     
 *   Open for contributions! Feel free to fork and create pull requests.
 
