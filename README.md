@@ -108,7 +108,7 @@ Above is an illustration of how the decryption process works, from the encrypted
     <img src="static/images/harsh.jpg" alt="Harshvardhan Patel" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc; margin-right: 20px;">
     <div>
         <p><b>Harshvardhan Patel</b></p>
-        <a href="https://github.com/harshvardhanpatel00011">GitHub Profile</a>
+        <a href="https://github.com/Harshvardhanpatel00011">GitHub Profile</a>
     </div>
 </div>
 
